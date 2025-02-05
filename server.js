@@ -16,8 +16,8 @@ app.use(cors({
     allowedHeaders: "Content-Type"
 }));
 
-const MONGO_URI = process.env.MONGO_URI || "your_mongodb_atlas_url";
-const BASE_URL = process.env.BASE_URL || "https://your-backend-url.com";
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://siddh2k1:mongo@sidcluster1.fhfsn.mongodb.net/HW3?retryWrites=true&w=majority&appName=sidcluster1";
+const BASE_URL = process.env.BASE_URL || "localhost:5000";
 
 // Connect to MongoDB
 mongoose.connect(MONGO_URI, {
