@@ -9,7 +9,6 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-// Allow specific frontend origin
 app.use(cors({
     origin: "https://siddharth-khachane.github.io",
     methods: "GET,POST",
@@ -17,16 +16,14 @@ app.use(cors({
 }));
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://siddh2k1:mongo@sidcluster1.fhfsn.mongodb.net/HW3?retryWrites=true&w=majority&appName=sidcluster1";
-const BASE_URL = process.env.BASE_URL || "http://localhost:5000/";
+const BASE_URL = process.env.BASE_URL || "http://localhost:8080/";
 
-// Connect to MongoDB
 mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => console.log("MongoDB Connected"))
   .catch(err => console.error("MongoDB Connection Error:", err));
 
-// Define URL Schema
 const UrlSchema = new mongoose.Schema({
     originalUrl: { type: String, required: true },
     shortId: { type: String, required: true, unique: true }
@@ -34,7 +31,6 @@ const UrlSchema = new mongoose.Schema({
 
 const Url = mongoose.model("Url", UrlSchema);
 
-// API Route: Shorten URL
 app.post("/api/url/shorten", async (req, res) => {
     const { originalUrl } = req.body;
     if (!originalUrl) return res.status(400).json({ error: "URL is required" });
@@ -51,7 +47,6 @@ app.post("/api/url/shorten", async (req, res) => {
     res.json({ shortUrl: `${BASE_URL}/${shortId}` });
 });
 
-// API Route: Redirect to Original URL
 app.get("/:shortId", async (req, res) => {
     const url = await Url.findOne({ shortId: req.params.shortId });
     if (url) {
@@ -61,6 +56,5 @@ app.get("/:shortId", async (req, res) => {
     }
 });
 
-// Start Server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
